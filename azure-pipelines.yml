@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NODE_VERSION: '20'
+  AZURE_APP_NAME: 'next-azure-app-service-test'  # Replace with your App Service name
+  AZURE_SERVICE_CONNECTION: 'f70bdf5b-2914-4419-bcc9-bb1cafb0c176'  # Replace with your service connection name
+
+stages:
+  - stage: BuildAndDeploy
+    jobs:
+      - job: Build
+        steps:
+          - task: UseNode@2
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          
+          - script: |
+              npm install
+              npm run build
+            displayName: 'Install Dependencies and Build'
+
+      - job: Deploy
+        dependsOn: Build
+        steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              appName: $(AZURE_APP_NAME)
+              package: '$(System.DefaultWorkingDirectory)/**/*.zip'  # Ensures all built assets are deployed
+              runtimeStack: 'NODE|20-lts'
