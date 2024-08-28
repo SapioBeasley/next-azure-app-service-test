@@ -9,6 +9,7 @@ on:
 env:
   APPLICATION_PUBLISH_PROFILE: ${{ secrets.APP_PUBLISH_PROFILE }}
   WEBAPP_NAME: 'next-azure-app-service-test'
+  DATABASE_URL: 'sqlserver://next-azure-swa-test-db-server.database.windows.net:1433;database=next-azure-swa-test-db;user=testing;password=q12we34rt5^YHGFDSAQ!;encrypt=true' # move to GH secrets
 
 jobs:
   build:
