@@ -9,14 +9,26 @@ import {
 } from '@/components/ui/card';
 import dayjs from 'dayjs';
 import { CalendarDays, MapPin } from 'lucide-react';
+import { unstable_noStore as noStore } from 'next/cache';
 
-const Home = () => {
+const Home = async () => {
+  noStore();
+
   const timeOnServer = dayjs().format('h:mm:ss A');
 
-  const totalFailedBanks: number = 0;
-  const topAcquirers: any[] = [];
-  const failuresByState: any[] = [];
-  const recentFailures: any[] = [];
+  const response = await fetch(`${process.env.APP_HOST}/api/failed-banks`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  const {
+    totalFailedBanks,
+    failuresByState,
+    topAcquirers,
+    recentFailures,
+    failuresTimeline,
+  } = await response.json();
 
   return (
     <Main>
