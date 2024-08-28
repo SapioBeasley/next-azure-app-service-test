@@ -11,6 +11,7 @@ variables:
   NODE_VERSION: '20'
   AZURE_APP_NAME: 'next-azure-app-service-test'  # Replace with your App Service name
   AZURE_SERVICE_CONNECTION: 'Azure subscription 1 (f70bdf5b-2914-4419-bcc9-bb1cafb0c176)'  # Replace with your service connection name
+  DATABASE_URL: 'sqlserver://next-azure-swa-test-db-server.database.windows.net:1433;database=next-azure-swa-test-db;user=testing;password=q12we34rt5^YHGFDSAQ!;encrypt=true'
 
 stages:
   - stage: BuildAndDeploy
@@ -20,12 +21,16 @@ stages:
           - task: NodeTool@0
             inputs:
               versionSpec: $(NODE_VERSION)
+            displayName: 'Use Node.js $(NODE_VERSION)'
           
           - script: |
               npm install
               npm run build
-            displayName: 'Install Dependencies and Build'
-            
+              npm run prisma:generate
+              mv ./build/static ./build/standalone/build
+              mv ./public ./build/standalone
+            displayName: 'Install Dependencies, Build, and Generate Prisma'
+          
           - task: ArchiveFiles@2
             inputs:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/out'  # Update this path to your build output directory
