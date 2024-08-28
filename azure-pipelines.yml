@@ -9,14 +9,14 @@ pool:
 variables:
   NODE_VERSION: '20'
   AZURE_APP_NAME: 'next-azure-app-service-test'  # Replace with your App Service name
-  AZURE_SERVICE_CONNECTION: 'f70bdf5b-2914-4419-bcc9-bb1cafb0c176'  # Replace with your service connection name
+  AZURE_SERVICE_CONNECTION: 'Azure subscription 1 (f70bdf5b-2914-4419-bcc9-bb1cafb0c176)'  # Replace with your service connection name
 
 stages:
   - stage: BuildAndDeploy
     jobs:
       - job: Build
         steps:
-          - task: UseNode@2
+          - task: NodeTool@0
             inputs:
               versionSpec: $(NODE_VERSION)
           
