@@ -56,3 +56,11 @@ stages:
               appName: $(AZURE_APP_NAME)
               package: '$(System.DefaultWorkingDirectory)/drop/$(Build.BuildId).zip'
               runtimeStack: 'NODE|20-lts'
+
+          - script: |
+              npm cache clean --force
+              rm -rf node_modules
+              rm -rf build
+              rm -rf ~/.npm/_logs
+            displayName: 'Clean up after build'
+            condition: always()  # Ensure this step runs even if the build fails
