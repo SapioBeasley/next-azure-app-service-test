@@ -35,7 +35,7 @@ const Home = async () => {
       <Section>
         <Container className='space-y-4'>
           <div>
-            This is a Next.js application hosted on Azure Static Web Apps with
+            This is a Next.js application hosted on an Azure App Service with
             hybrid rendering. The time on the server is{' '}
             <strong>{`dayjs: ${timeOnServer}`}</strong>.
           </div>
