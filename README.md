@@ -1,6 +1,6 @@
-# Next.js 14 App Deployment to Azure App Service using GitHub Actions
+# Next.js 14 App Deployment to Azure App Service using Azure DevOps Pipelines
 
-This README outlines the steps taken to successfully deploy a Next.js 14 application to Azure App Service using GitHub Actions, based on the guide provided in [this Medium article](https://medium.com/@dileepa.mabulage/deploying-a-next-js-14-app-to-azure-app-service-using-github-actions-f5119a56e9f4).
+This README outlines the steps taken to successfully deploy a Next.js 14 application to Azure App Service using Azure DevOps Pipelines.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ Before starting, ensure you have the following:
 
 - A Next.js 14 application.
 - An Azure account with an App Service created.
-- GitHub repository set up for your Next.js application.
+- An Azure DevOps account with a repository set up for your Next.js application.
 
 ## Step 1: Create and Configure the Azure App Service
 
@@ -17,54 +17,56 @@ Before starting, ensure you have the following:
    - Log in to your Azure portal.
    - Navigate to "App Services" and click "Create".
    - Fill in the necessary details:
-     - Subscription: Choose your subscription.
-     - Resource Group: Create a new one or use an existing one.
-     - Name: Provide a unique name for your App Service.
-     - Runtime Stack: Choose Node.js 18 LTS.
-     - Region: Select the region closest to your users.
+     - **Subscription**: Choose your subscription.
+     - **Resource Group**: Create a new one or use an existing one.
+     - **Name**: Provide a unique name for your App Service.
+     - **Runtime Stack**: Choose Node.js 18 LTS or the version your app requires.
+     - **Region**: Select the region closest to your users.
    - Click "Review + create" and then "Create".
 
 2. **Configure the App Service:**
 
    - Navigate to the App Service you created.
    - Go to "Deployment Center" under the "Deployment" section.
-   - Select "GitHub Actions" as your deployment method.
-   - Choose your GitHub repository and branch.
+   - Choose "Azure Repos" if you plan to link directly, but this step will be automated using Azure DevOps pipelines.
 
 3. **Set Environment Variables:**
    - In the App Service, go to "Settings" -> "Configuration".
    - Add the required environment variables, such as `NEXT_PUBLIC_API_URL`, `DATABASE_URL`, etc.
    - Save and apply your settings.
 
-## Step 2: Set Up GitHub Actions for CI/CD
+## Step 2: Set Up Azure DevOps Pipeline for CI/CD
 
-1. **Create a GitHub Action Workflow:**
+1. **Create a New Pipeline:**
 
-   - In your GitHub repository, navigate to the "Actions" tab.
-   - Click "New Workflow" and then "Set up a workflow yourself".
-   - Name your workflow file (e.g., `azure-deploy.yml`).
+   - In your Azure DevOps project, go to "Pipelines" -> "Create Pipeline".
+   - Choose "Azure Repos Git" or "GitHub" based on where your repository is hosted.
+   - Authenticate and select your repository.
+   - Choose to start with an empty pipeline or existing YAML file.
 
-2. **Add the Deployment Workflow:**
+2. **Add the Pipeline YAML Configuration:**
 
-   - Copy the following content into your workflow file:
+   - Replace the existing content with the following pipeline configuration:
 
-3. **Set the Publish Profile Secret:**
+3. **Save and Run the Pipeline:**
 
-   - In Azure, navigate to your App Service -> "Deployment Center" -> "Settings".
-   - Click on "Get Publish Profile" and download the file.
-   - In GitHub, go to "Settings" -> "Secrets and Variables" -> "Actions".
-   - Create a new secret named `APP_PUBLISH_PROFILE`.
-   - Paste the contents of the publish profile file into this secret.
-
-4. **Commit and Push:**
-   - Commit the workflow file to your repository and push it to the `main` branch.
+   - Commit the pipeline YAML file to your repository.
+   - The pipeline will automatically trigger on a push to the `main` branch, or you can manually run it.
 
 ## Step 3: Monitor the Deployment
 
-- Once you push to the `main` branch, GitHub Actions will automatically trigger the deployment process.
-- You can monitor the workflow progress under the "Actions" tab in your GitHub repository.
+- You can monitor the pipeline's execution in the "Pipelines" tab in Azure DevOps.
 - Upon successful deployment, your Next.js 14 app should be live on Azure App Service.
+
+## Step 4: Configure the Azure App Service (Post-Deployment)
+
+After deployment, ensure the following configurations are set:
+
+1. **Environment Variables**: Verify all required environment variables are set in the Azure App Service.
+2. **Node.js Version**: Ensure the correct Node.js version is selected in the App Service configuration.
+3. **Startup Command**: If necessary, configure a custom startup command in the App Service (e.g., `node server.js`).
+4. **Monitoring and Scaling**: Set up monitoring, logging, and scaling options as required.
 
 ## Conclusion
 
-Following these steps, your Next.js 14 application will be successfully deployed to Azure App Service using GitHub Actions. For further details or troubleshooting, refer to the original [Medium article](https://medium.com/@dileepa.mabulage/deploying-a-next-js-14-app-to-azure-app-service-using-github-actions-f5119a56e9f4).
+Following these steps, your Next.js 14 application will be successfully deployed to Azure App Service using Azure DevOps Pipelines. This setup ensures continuous integration and deployment, allowing your application to be automatically built and deployed with every change to your `main` branch.
