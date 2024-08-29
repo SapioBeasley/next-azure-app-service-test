@@ -10,6 +10,25 @@ Before starting, ensure you have the following:
 - An Azure account with an App Service created.
 - An Azure DevOps account with a repository set up for your Next.js application.
 
+## Next.js Configuration Updates
+
+Before deploying your Next.js application, ensure that the following updates are made to your `next.config.js` file to optimize the application for deployment on Azure App Service:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  distDir: 'build',
+  output: 'standalone',
+};
+
+export default nextConfig;
+```
+
+- **`reactStrictMode: true`**: Ensures your application runs in React's strict mode, helping you identify potential problems.
+- **`distDir: 'build'`**: Changes the default output directory from `.next` to `build`.
+- **`output: 'standalone'`**: Configures the application to be built as a standalone output, bundling all necessary files for deployment.
+
 ## Step 1: Create and Configure the Azure App Service
 
 1. **Create an Azure App Service:**
