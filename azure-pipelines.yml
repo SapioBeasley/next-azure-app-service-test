@@ -54,7 +54,8 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               appName: $(AZURE_APP_NAME)
-              package: '$(System.DefaultWorkingDirectory)/drop/$(Build.BuildId).zip'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'  # Correct the path to the downloaded artifact
+              publish-profile: '$(APPLICATION_PUBLISH_PROFILE)'
               runtimeStack: 'NODE|20-lts'
 
           - script: |
